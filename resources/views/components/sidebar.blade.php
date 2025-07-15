@@ -1,13 +1,12 @@
-<!-- Sidebar -->
-        <div class="col-2 p-0 border-end border-1 border-secondary">
-            <aside class="vh-100 overflow-auto p-3">
-                <div class="accordion accordion-flush" id="accordionFlushExample">
+@props(['category'])
+  
+        <div class="accordion accordion-flush" id="accordionFlushExample">
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#flush-collapseOne" aria-expanded="false"
                                 aria-controls="flush-collapseOne">
-                                Racunari
+                                {{$category->name}}
                             </button>
                         </h2>
                         <div id="flush-collapseOne" class="accordion-collapse collapse"
@@ -20,5 +19,3 @@
                         </div>
                     </div>
                 </div>
-            </aside>
-        </div>
