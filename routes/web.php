@@ -23,7 +23,7 @@ Route::get('/', [HomeController::class,'index'])->name('home');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
@@ -32,11 +32,16 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-
+//Products
+Route::get('/products/create', [ProductController::class,'create'])->name('products.create');
+Route::post('/products/create', [ProductController::class,'store'])->name('products.store');
 Route::get('/products/{product}', [ProductController::class, 'show'])
     ->where('product', '[0-9]+')
     ->name('products.show');
 
+
+//Categories
+Route::get('/categories/{parent}/children', [CategoryController::class, 'getChildren']);
 Route::get('/categories/{category}', [CategoryController::class, 'show'])
     ->where('category', '[0-9]+')
     ->name('categories.show');

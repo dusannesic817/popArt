@@ -1,14 +1,18 @@
 @props(['product'])
 
-<a href="{{ route('products.show', $product) }}">
-    <div class="card card-fixed-height d-flex flex-column" style="height: 300px;">
-        <div class="card-body p-2 d-flex align-items-center justify-content-center">
-            <img src="..." class="img-fluid" alt="..."
-                style="max-height: 100%; max-width: 100%; object-fit: contain;">
-        </div>
-        <div class="card-footer bg-white border-0 ">
-            <div><strong>{{$product->title}}</strong></div>
-            <small class="text-muted">Price: {{$product->price}}$</small>
-        </div>
+<a href="{{ route('products.show', $product) }}" class="text-decoration-none">
+<div class="card card-fixed-height d-flex flex-column" style="height: 300px;">
+    <div class="flex-grow-1 d-flex align-items-center justify-content-center p-0">
+        <img src="{{ $product->image ? asset('storage/' . $product->image) : asset('storage/images/no-image.png') }}"
+             alt="..."
+             style="width: 100%; height: 100%; object-fit: contain;">
     </div>
+
+    <div class="card-footer bg-white border-0">
+        <div><strong>{{ $product->title }}</strong></div>
+        <small class="text-muted">Price: {{ $product->price }}$</small>
+    </div>
+</div>
+
+
 </a>

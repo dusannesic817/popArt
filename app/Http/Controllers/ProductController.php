@@ -14,8 +14,6 @@ class ProductController extends Controller
     public function index()
     {
         $product = Product::latest()->get();
-
-        
     }
 
     /**
@@ -23,27 +21,46 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        $parents = Category::whereNull('parent_id')->get();
+
+       
+        return view('products.create',[
+            'parents'=>$parents
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+
+   public function store(Request $request)
+{
+        $formFields = $request->validate([
+            'category_id' => 'required',
+            'title' => ['required', 'string', 'max:100'],
+            'description' => 'required',
+            'price' => ['required', 'numeric'],
+            'condition' => 'required',
+        ]);
+
+        if ($request->hasFile('image')) {
+            
+            $formFields['image'] = $request->file('image')->store('images', 'public');
+        }
+
+        $formFields['user_id'] = auth()->id();
+
+        Product::create($formFields);
+
+        return redirect('/')->with('status', "Post successfully created");
+}
+
 
     /**
      * Display the specified resource.
      */
     public function show(Product $product)
     {
-        $products = Product::with(['user', 'category'])->get();
+        //$produc = Product::with(['user', 'category'])->get();
         $categories = Category::with('children')->whereNull('parent_id')->get();
 
-
-        //dd($product);
 
         return view('products.show',[
             'product'=>$product,

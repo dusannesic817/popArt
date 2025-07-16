@@ -80,4 +80,9 @@ class CategoryController extends Controller
         }
         return $array;
     }
+
+    public function getChildren(Category $parent){
+    
+    return response()->json($parent->children()->select('id', 'name')->get());
+}
 }
