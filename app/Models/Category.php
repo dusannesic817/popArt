@@ -20,4 +20,20 @@ class Category extends Model
     public function children(){
         return $this->hasMany(Category::class, 'parent_id');
     }
+
+    public function childrenRecursive(){
+        return $this->children()->with('childrenRecursive');
+    }
+
+    public function ancestors()    {
+    $ancestors = collect();
+    $parent = $this->parent;
+
+    while ($parent) {
+        $ancestors->prepend($parent);  
+        $parent = $parent->parent;
+    }
+
+    return $ancestors;
+}
 }

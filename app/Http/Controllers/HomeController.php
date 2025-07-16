@@ -10,8 +10,11 @@ class HomeController extends Controller
 {
     public function index(){
 
-        $products = Product::select('title','price')->get();
-        $categories = Category::all();
+    $products = Product::select('id','title','price')->get();
+    $categories = Category::with('children')->whereNull('parent_id')->get();
+
+
+       // dd($categories);
 
         return view('home', [
 

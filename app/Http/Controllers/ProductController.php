@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -12,7 +13,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $product = Product::latest()->get();
+
+        
     }
 
     /**
@@ -36,8 +39,19 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
+        $products = Product::with(['user', 'category'])->get();
+        $categories = Category::with('children')->whereNull('parent_id')->get();
+
+
+        //dd($product);
+
+        return view('products.show',[
+            'product'=>$product,
+            'categories'=>$categories
+        ]);
     }
+
+
 
     /**
      * Show the form for editing the specified resource.
