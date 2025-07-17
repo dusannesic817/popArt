@@ -28,7 +28,7 @@ class CategoryController extends Controller
 
     public function subcategory(){
 
-       $parents = Category::whereNull('parent_id')->get();
+       $parents = Category::all();
         return view('admin.categories.subcategory',['parents'=>$parents]);
     }
 
@@ -76,8 +76,9 @@ class CategoryController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
-    {
-        //
+    {   
+        $category = Category::find($id);
+        return view('admin.categories.edit',['category'=>$category]);
     }
 
     /**
@@ -85,7 +86,19 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+
+        $product=Category::find($id);
+               
+        if (!auth()->user()->is_admin) {
+            abort(403, 'No ristrict');
+        }
+        
+        $fields = $request->validate([
+            'name' => ['required', 'string', 'unique:categories,name'],
+        ]);
+
+        $product->update($fields);
+        return redirect()->route('admin.categories.index')->with('status', "Category successfully created");
     }
 
     /**
@@ -93,6 +106,13 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+         $category=Category::find($id);
+
+         if (!auth()->user()->is_admin) {
+            abort(403, 'No ristrict');
+        }
+        $category->delete(); 
+
+        return redirect()->route('admin.categories.index')->with('status', "Category successfully deleted");
     }
 }

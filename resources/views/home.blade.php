@@ -17,9 +17,14 @@
                             <x-products-card :product="$product" />
                         </div>
                     @endforeach
-                    @endunless
+                    @endunless               
                 </div>
+                <div class="mt-3">
+                    {{ $products->links() }}
+                </div>
+                
             </div>
+            
         </div>
     </div>
 
