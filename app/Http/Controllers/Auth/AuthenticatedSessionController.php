@@ -22,12 +22,19 @@ class AuthenticatedSessionController extends Controller
 
     /**
      * Handle an incoming authentication request.
+     * 
      */
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
 
         $request->session()->regenerate();
+
+         $user = auth()->user();
+
+        if ($user->is_admin) {
+            return redirect()->route('admin.products.index');
+        }
 
        return redirect()->route('profile.index');
     }
