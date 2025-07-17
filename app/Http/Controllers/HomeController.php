@@ -12,8 +12,6 @@ class HomeController extends Controller
 
     $products = Product::select('id','title','price','image')->latest()->get();
     $categories = Category::with('children')->whereNull('parent_id')->get();
-
-
        
 
         return view('home', [

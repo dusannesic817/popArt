@@ -10,10 +10,10 @@
                 </aside>
             </div>
             <div class="col-10">
-                <div class="row">
+                <div class="row row-gap-3">
                     @unless(count($products)==0)
                     @foreach ($products as $product)
-                        <div class="col-md-3 mb-4">
+                       <div class="col-lg-3 col-6">
                             <x-products-card :product="$product" />
                         </div>
                     @endforeach

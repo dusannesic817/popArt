@@ -2,18 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Http\RedirectResponse;
+use App\Models\Category;
+use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\View\View;
+use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Product;
 
 class ProfileController extends Controller
 {
 
     public function index(){
-        return view('profile.index');
+
+        $categories = Category::with('children')->whereNull('parent_id')->get();
+        $products = Product::where('user_id',auth()->id())->latest()->get();
+
+     
+
+        return view('profile.index',[
+            'categories'=>$categories,
+            'products'=>$products
+        ]);
     }
     public function edit(Request $request): View
     {

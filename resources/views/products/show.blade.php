@@ -9,45 +9,22 @@
                     @endforeach
                 </aside>
             </div>
-
-            <!-- Content -->
             <div class="col-8">
-                <div class="card">
+                <div class="card mb-3">
+                    <img src="{{ $product->image ? asset('storage/' . $product->image) : asset('storage/images/no-image.png') }}"
+                        class="card-img-top" alt="...">
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <img src="{{ $product->image ? asset('storage/' . $product->image) : asset('storage/images/no-image.png') }}"
-                                    class="img-fluid w-100" alt="Product Image"
-                                    style="object-fit: contain; max-height: 400px;">
-                            </div>
+                        <div class="d-flex justify-content-between">
+                            <h5 class="card-title mb-0">{{ $product->title }}</h5>
+                            <div>Location: {{ $product->user->location }}</div>
                         </div>
-
-                        <div class="row mt-4">
-                            <div class="col-4 ms-auto">
-                                <div class="d-flex flex-column mb-3">
-                                    <div class="p-2">Title: <b>{{ $product->title }}</b></div>
-                                    <div class="p-2">Price: {{ $product->price }}$</div>
-                                    <div class="p-2">Location: {{ $product->user->location }}</div>
-                                    
-                            <div class="p-2">Name: <b>{{ $product->user->name }}</b></div>
-                            <div class="p-2">Email: {{ $product->user->email }}$</div>
-                            <div class="p-2">Kontakt {{ $product->user->phone }}$</div>
-                           
-                        
-
-                                </div>
-                            </div>
-
-                            <div class="col-8">
-                                <strong>Description</strong>
-                                <p>{{ $product->description }}</p>
-                            </div>
-                        </div>
+                        <p>Price: {{ $product->price }}$</p>
+                        <p class="card-text">{{ $product->description }}</p>
+                        <p class="card-text"><small class="text-body-secondary">{{ $product->user->name }}
+                                {{ $product->user->phone }}</small></p>
                     </div>
-
                 </div>
             </div>
-
         </div>
     </div>
 
