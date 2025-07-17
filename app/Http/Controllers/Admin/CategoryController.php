@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -12,7 +13,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $categories = Category::latest()->paginate(10);
+
+        return view('admin.categories.index',['categories'=>$categories]);
     }
 
     /**
@@ -20,7 +23,28 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.categories.create');
+    }
+
+    public function subcategory(){
+
+       $parents = Category::whereNull('parent_id')->get();
+        return view('admin.categories.subcategory',['parents'=>$parents]);
+    }
+
+    public function storeSubcategory(Request $request){
+
+        if (!auth()->user()->is_admin) {
+            abort(403, 'No ristrict');
+        }
+        
+        $fields = $request->validate([
+            'name' => ['required', 'string', 'unique:categories,name'],
+            'parent_id'=>'required'
+        ]);
+
+        Category::create($fields);
+        return redirect()->route('admin.categories.index')->with('status', "Category successfully created");
     }
 
     /**
@@ -28,7 +52,16 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         if (!auth()->user()->is_admin) {
+            abort(403, 'No ristrict');
+        }
+        
+        $fields = $request->validate([
+            'name' => ['required', 'string', 'unique:categories,name'],
+        ]);
+
+        Category::create($fields);
+        return redirect()->route('admin.categories.index')->with('status', "Category successfully created");
     }
 
     /**

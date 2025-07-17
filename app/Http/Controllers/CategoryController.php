@@ -43,7 +43,7 @@ class CategoryController extends Controller
 
 
         $children = Category::where('parent_id', $category->id)->get();
-        $breadcrumbs = $category->ancestors()->push($category); // Dodaj i samu kategoriju na kraj
+        $breadcrumbs = $category->ancestors()->push($category);
         
         return view('categories.show',[
             'products'=>$products,

@@ -13,18 +13,6 @@ use App\Http\Controllers\ProfileController;
 
 
 
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
 Route::get('/', [HomeController::class,'index'])->name('home');
 
 
@@ -35,6 +23,8 @@ Route::get('/dashboard', function () {
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
     Route::resource('products', AdminProductController::class);
     Route::resource('categories', AdminCategoryController::class);
+    Route::get('subcategories/create', [AdminCategoryController::class, 'subcategory'])->name('categories.subcategory');
+    Route::post('subcategories/create', [AdminCategoryController::class, 'storeSubcategory'])->name('categories.storeSubcategory');
     Route::resource('users', AdminUserController::class);
 });
 
@@ -52,7 +42,6 @@ Route::get('/products/edit/{product}', [ProductController::class,'edit'])->name(
 Route::put('/products/{product}', [ProductController::class,'update'])->name('products.update')->middleware(['auth']);;
 Route::delete('/products/{product}', [ProductController::class,'destroy'])->name('products.destroy')->middleware(['auth']);;
 Route::post('/products/create', [ProductController::class,'store'])->name('products.store')->middleware(['auth']);
-
 Route::get('/products/{product}', [ProductController::class, 'show'])->where('product', '[0-9]+')->name('products.show');
 
 
