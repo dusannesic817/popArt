@@ -6,19 +6,14 @@ use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
-class ProductController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     */
+class ProductController extends Controller{
+
     public function index()
     {
         $product = Product::latest()->get();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+
     public function create()
     {
         $parents = Category::whereNull('parent_id')->get();
@@ -54,12 +49,10 @@ class ProductController extends Controller
 }
 
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(Product $product)
     {
-        //$produc = Product::with(['user', 'category'])->get();
+        
         $categories = Category::with('children')->whereNull('parent_id')->get();
 
 
@@ -71,9 +64,7 @@ class ProductController extends Controller
 
 
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+
     public function edit(Product $product)
     {
         $parents = Category::whereNull('parent_id')->get();
@@ -84,16 +75,14 @@ class ProductController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(Request $request, Product $product)
     {
         //dd($request->all());
-
         if($product->user_id != auth()->id()){
             abort(403, "Unauthorized Action");
         }
+       
 
           $formFields = $request->validate([
             'category_id' => 'required',
@@ -114,18 +103,17 @@ class ProductController extends Controller
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy(Product $product)
     {
         if($product->user_id != auth()->id()){
             abort(403, "Unauthorized Action");
         }
+       
 
-        $product->delete();
+        $product->delete(); 
 
-         return redirect()->route('profile.index')->with('status', "Post successfully delted");
+        return redirect()->route('profile.index')->with('status', "Post successfully delted");
 
     }
 }
