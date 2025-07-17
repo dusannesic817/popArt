@@ -22,7 +22,7 @@
                 @endguest
                 @auth
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Profile</a>
+                        <a class="nav-link" href="{{route('profile.index')}}">Profile</a>
                     </li>
                     <li class="nav-item">
                         <form method="POST" action="{{ route('logout') }}">

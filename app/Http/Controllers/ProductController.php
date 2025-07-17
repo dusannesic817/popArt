@@ -30,6 +30,7 @@ class ProductController extends Controller
     }
 
 
+
    public function store(Request $request)
 {
         $formFields = $request->validate([
@@ -75,7 +76,12 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        $parents = Category::whereNull('parent_id')->get();
+
+        return view ('products.edit',[
+            'product'=>$product,
+            'parents'=>$parents
+        ]);
     }
 
     /**
@@ -83,7 +89,29 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        //dd($request->all());
+
+        if($product->user_id != auth()->id()){
+            abort(403, "Unauthorized Action");
+        }
+
+          $formFields = $request->validate([
+            'category_id' => 'required',
+            'title' => ['required', 'string', 'max:100'],
+            'description' => 'required',
+            'price' => ['required', 'numeric'],
+            'condition' => 'required',
+        ]);
+
+        if ($request->hasFile('image')) {
+            
+            $formFields['image'] = $request->file('image')->store('images', 'public');
+        }
+
+        $product->update($formFields);
+
+       return redirect()->route('profile.index')->with('status', "Post successfully edited");
+
     }
 
     /**
@@ -91,6 +119,13 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        if($product->user_id != auth()->id()){
+            abort(403, "Unauthorized Action");
+        }
+
+        $product->delete();
+
+         return redirect()->route('profile.index')->with('status', "Post successfully delted");
+
     }
 }

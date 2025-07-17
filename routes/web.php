@@ -33,18 +33,18 @@ Route::middleware('auth')->group(function () {
 });
 
 //Products
-Route::get('/products/create', [ProductController::class,'create'])->name('products.create');
-Route::post('/products/create', [ProductController::class,'store'])->name('products.store');
-Route::get('/products/{product}', [ProductController::class, 'show'])
-    ->where('product', '[0-9]+')
-    ->name('products.show');
+Route::get('/products/create', [ProductController::class,'create'])->name('products.create')->middleware(['auth']);
+Route::get('/products/edit/{product}', [ProductController::class,'edit'])->name('products.edit')->middleware(['auth']);;
+Route::put('/products/{product}', [ProductController::class,'update'])->name('products.update')->middleware(['auth']);;
+Route::delete('/products/{product}', [ProductController::class,'destroy'])->name('products.destroy')->middleware(['auth']);;
+Route::post('/products/create', [ProductController::class,'store'])->name('products.store')->middleware(['auth']);
+
+Route::get('/products/{product}', [ProductController::class, 'show'])->where('product', '[0-9]+')->name('products.show');
 
 
 //Categories
 Route::get('/categories/{parent}/children', [CategoryController::class, 'getChildren']);
-Route::get('/categories/{category}', [CategoryController::class, 'show'])
-    ->where('category', '[0-9]+')
-    ->name('categories.show');
+Route::get('/categories/{category}', [CategoryController::class, 'show'])->where('category', '[0-9]+')->name('categories.show');
 
 
 
