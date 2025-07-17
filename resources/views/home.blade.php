@@ -1,4 +1,5 @@
 <x-layout>
+    @include('partials._search')
     <div class="container">
         <div class="row mt-5">
             <div class="col-2 p-0 border-end border-1 border-secondary">

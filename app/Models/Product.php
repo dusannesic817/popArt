@@ -27,4 +27,22 @@ class Product extends Model
     public function category(){
         return $this->belongsTo(Category::class);
     }
+
+    public function scopeFilter($query, $filters){
+       if ($filters['search'] ?? false) {
+        $search = $filters['search'];
+
+        $query->where(function ($q) use ($search) {
+            $q->where('title', 'like', "%$search%")
+              ->orWhere('description', 'like', "%$search%")
+              ->orWhere('price', 'like', "%$search%")
+              ->orWhereHas('category', function ($join) use ($search) {
+                  $join->where('name', 'like', "%$search%");
+              })
+              ->orWhereHas('user', function ($join) use ($search) {
+                  $join->where('location', 'like', "%$search%");
+              });
+        });
+    }
+    }
 }
