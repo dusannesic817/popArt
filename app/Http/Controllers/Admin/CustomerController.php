@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use App\Http\Controllers\Controller;
 
-class UserController extends Controller
+class CustomerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +16,7 @@ class UserController extends Controller
     {   
         $customers = User::where('is_admin', 0)->latest()->paginate(10);
         //dd($customers);
-        return view ('admin.users.index',[
+        return view ('admin.customers.index',[
             'customers'=>$customers
         ]);
     }
@@ -25,7 +26,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        
+        return view ('admin.customers.create');
     }
 
     /**
@@ -33,7 +34,19 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $formFields= $request->validate([
+            'name'=>['required','min:3'],
+            'email'=>['required','email',Rule::unique('users','email')],
+            'location'=>'required',
+            'phone'=>['required',Rule::unique('users','phone')],
+            'password'=>['required','confirmed','min:6']
+
+        ]);
+
+        $formFields['password'] = bcrypt($formFields['password']);
+        User::create($formFields);
+
+        return redirect()->route('admin.customers.index')->with('status', "Customer successfully created");
     }
 
     /**
@@ -49,7 +62,7 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        //
+         return view ('admin.customers.edit');
     }
 
     /**
@@ -72,6 +85,6 @@ class UserController extends Controller
         }
 
         $customer->delete(); 
-        return redirect()->route('admin.users.index')->with('status', "Post successfully deleted");
+        return redirect()->route('admin.customers.index')->with('status', "Post successfully deleted");
     }
 }

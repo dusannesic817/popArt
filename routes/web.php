@@ -8,7 +8,7 @@ use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\CustomerController as AdminCustomerController;
 use App\Http\Controllers\ProfileController;
 
 
@@ -25,7 +25,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::resource('categories', AdminCategoryController::class);
     Route::get('subcategories/create', [AdminCategoryController::class, 'subcategory'])->name('categories.subcategory');
     Route::post('subcategories/create', [AdminCategoryController::class, 'storeSubcategory'])->name('categories.storeSubcategory');
-    Route::resource('users', AdminUserController::class);
+    Route::resource('customers', AdminCustomerController::class);
 });
 
 

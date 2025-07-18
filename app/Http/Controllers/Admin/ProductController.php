@@ -14,7 +14,6 @@ class ProductController extends Controller
     {
 
        $products = Product::with('user','category')->latest()->paginate(20);
-
         return view('admin.products.index',[
             'products'=>$products
         ]);
@@ -50,7 +49,7 @@ class ProductController extends Controller
 
         Product::create($formFields);
 
-        return redirect('admin.products.index')->with('status', "Post successfully created");
+        return redirect()->route('admin.products.index')->with('status', "Post successfully created");
     }
 
  
