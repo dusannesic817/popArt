@@ -28,7 +28,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
 });
 
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -36,11 +36,13 @@ Route::middleware('auth')->group(function () {
 });
 
 //Products
-Route::get('/products/create', [ProductController::class,'create'])->name('products.create')->middleware(['auth']);
-Route::get('/products/edit/{product}', [ProductController::class,'edit'])->name('products.edit')->middleware(['auth']);;
-Route::put('/products/{product}', [ProductController::class,'update'])->name('products.update')->middleware(['auth']);;
-Route::delete('/products/{product}', [ProductController::class,'destroy'])->name('products.destroy')->middleware(['auth']);;
-Route::post('/products/create', [ProductController::class,'store'])->name('products.store')->middleware(['auth']);
+Route::middleware(['auth'])->group(function () {
+    Route::get('/products/create', [ProductController::class,'create'])->name('products.create');
+    Route::post('/products/create', [ProductController::class,'store'])->name('products.store');
+    Route::get('/products/edit/{product}', [ProductController::class,'edit'])->name('products.edit');
+    Route::put('/products/{product}', [ProductController::class,'update'])->name('products.update');
+    Route::delete('/products/{product}', [ProductController::class,'destroy'])->name('products.destroy');
+});
 Route::get('/products/{product}', [ProductController::class, 'show'])->where('product', '[0-9]+')->name('products.show');
 
 
