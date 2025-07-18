@@ -1,4 +1,3 @@
-
 <nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
 
     <div class="container">
@@ -22,12 +21,23 @@
                 @endguest
                 @auth
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('profile.index')}}">Profile</a>
+                        <a class="nav-link" href="{{ route('profile.index') }}">Profile</a>
                     </li>
+                    @admin
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('admin.products.index') }}">Products</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('admin.customers.index') }}">Customers</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('admin.categories.index') }}">Categories</a>
+                        </li>
+                    @endadmin
                     <li class="nav-item">
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <button type="submit" class="nav-link btn btn-link">                                
+                            <button type="submit" class="nav-link btn btn-link">
                                 Logout
                             </button>
                         </form>
