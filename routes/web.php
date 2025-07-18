@@ -14,11 +14,10 @@ use App\Http\Controllers\ProfileController;
 
 
 Route::get('/', [HomeController::class,'index'])->name('home');
-
-
+/*
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+})->middleware(['auth'])->name('dashboard');*/
 
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
     Route::resource('products', AdminProductController::class);
@@ -48,8 +47,6 @@ Route::get('/products/{product}', [ProductController::class, 'show'])->where('pr
 //Categories
 Route::get('/categories/{parent}/children', [CategoryController::class, 'getChildren']);
 Route::get('/categories/{category}', [CategoryController::class, 'show'])->where('category', '[0-9]+')->name('categories.show');
-
-
 
 
 
