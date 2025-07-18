@@ -24,7 +24,6 @@
                                 @error('email')
                                     <div class="form-text">{{ $message }}</div>
                                 @enderror
-
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">Password</label>
@@ -57,8 +56,25 @@
                                     <div class="form-text">{{ $message }}</div>
                                 @enderror
                             </div>
+                            <div class="mb-3">
+                                Admin Previliges
+                             <div class="form-check d-inline-block me-3">
+                                <input class="form-check-input" type="radio" name="is_admin" id="radioDefault1"
+                                    value="1">
+                                <label class="form-check-label" for="radioDefault1">
+                                    Yes
+                                </label>
+                            </div>
+                            <div class="form-check d-inline-block">
+                                <input class="form-check-input" type="radio" name="is_admin" id="radioDefault2"
+                                    value="0" checked>
+                                <label class="form-check-label" for="radioDefault2">
+                                    No
+                                </label>
+                            </div>
+                            </div>
                             
-                            <div class="mt-3">
+                            <div class="mt-5">
                                 <button type="submit" class="btn btn-primary w-100">Add Customer</button>
                             </div>
                         </form>

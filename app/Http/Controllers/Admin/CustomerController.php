@@ -37,6 +37,7 @@ class CustomerController extends Controller
         $formFields= $request->validate([
             'name'=>['required','min:3'],
             'email'=>['required','email',Rule::unique('users','email')],
+            'is_admin'=>'required',
             'location'=>'required',
             'phone'=>['required',Rule::unique('users','phone')],
             'password'=>['required','confirmed','min:6']
@@ -49,9 +50,7 @@ class CustomerController extends Controller
         return redirect()->route('admin.customers.index')->with('status', "Customer successfully created");
     }
 
-    /**
-     * Display the specified resource.
-     */
+ 
     public function show(string $id)
     {
         //
@@ -61,8 +60,10 @@ class CustomerController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
-    {
-         return view ('admin.customers.edit');
+    {   
+
+        $customer = User::find($id);
+        return view ('admin.customers.edit',['customer'=>$customer]);
     }
 
     /**
@@ -70,7 +71,30 @@ class CustomerController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $customer = User::findOrFail($id);
+
+        if (!auth()->user()->is_admin) {
+            abort(403, 'No ristrict');
+        }
+
+        $formFields = $request->validate([
+            'name' => ['required', 'min:3'],
+            'email' => ['required', 'email', Rule::unique('users', 'email')->ignore($customer->id)],
+            'is_admin' => 'required',
+            'location' => 'required',
+            'phone' => ['required', Rule::unique('users', 'phone')->ignore($customer->id)],
+            'password' => ['nullable', 'confirmed', 'min:6'],
+        ]);
+
+        if ($request->filled('password')) {
+            $formFields['password'] = bcrypt($formFields['password']);
+        } else {
+            unset($formFields['password']);
+        }
+
+        $customer->update($formFields);
+
+        return redirect()->route('admin.customers.index')->with('status', "Customer successfully updated");
     }
 
     /**
