@@ -17,10 +17,11 @@ class ProductController extends Controller{
     public function create()
     {
         $parents = Category::whereNull('parent_id')->get();
-
+        $categories = Category::with('children')->whereNull('parent_id')->get();
        
         return view('products.create',[
-            'parents'=>$parents
+            'parents'=>$parents,
+            'categories'=>$categories
         ]);
     }
 
@@ -68,10 +69,11 @@ class ProductController extends Controller{
     public function edit(Product $product)
     {
         $parents = Category::whereNull('parent_id')->get();
-
+        $categories = Category::with('children')->whereNull('parent_id')->get();
         return view ('products.edit',[
             'product'=>$product,
-            'parents'=>$parents
+            'parents'=>$parents,
+            'categories'=>$categories
         ]);
     }
 
