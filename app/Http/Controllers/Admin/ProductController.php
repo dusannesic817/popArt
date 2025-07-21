@@ -24,7 +24,7 @@ class ProductController extends Controller
     {
        $parents = Category::whereNull('parent_id')->get();
        
-        return view('products.create',[
+        return view('admin.products.create',[
             'parents'=>$parents
         ]);
     }
